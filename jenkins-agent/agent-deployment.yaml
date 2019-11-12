@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-agent
+  namespace: default
+  labels:
+    app: jenkins-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-agent
+  template:
+    metadata:
+      labels:
+        app: jenkins-agent
+    spec:
+      serviceAccountName: jenkins-agent
+      containers:
+        - name: jenkins-agent
+          image: jnjam6681/jenkins-jnlp-agent:3.35
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: docker-sock
+            mountPath: /var/run/docker.sock
+          - name: jenkins-home
+            mountPath: "/var/jenkins_home"
+          env:
+            - name: JENKINS_URL
+              value: http://192.168.1.1/
+            - name: JENKINS_SECRET
+              value: 52226f0e169005c5bb0d946db
+            - name: JENKINS_WORKDIR
+              value: "/var/jenkins_home"
+            - name: JENKINS_AGENT_NAME
+              value: node
+      # securityContext:
+      #   runAsUser: 1000
+      #   fsGroup: 1000
+      # nodeSelector:
+      #   kubernetes.io/hostname: node-03-gfg5
+      volumes:
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: jenkins-agent-claim
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
