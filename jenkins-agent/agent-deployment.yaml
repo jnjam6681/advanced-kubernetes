@@ -34,6 +34,13 @@ spec:
               value: "/var/jenkins_home"
             - name: JENKINS_AGENT_NAME
               value: node
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "512m"
+            limits:
+              memory: "4096Mi"
+              cpu: "2000m"
       # securityContext:
       #   runAsUser: 1000
       #   fsGroup: 1000
