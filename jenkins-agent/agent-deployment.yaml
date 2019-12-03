@@ -46,6 +46,20 @@ spec:
       #   fsGroup: 1000
       # nodeSelector:
       #   kubernetes.io/hostname: node-03-gfg5
+      # tolerations:
+      # - key: "app"
+      #   operator: "Equal"
+      #   value: "jenkins"
+      #   effect: "NoSchedule"
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: "app"
+      #           operator: In
+      #           values:
+      #           - jenkins
       volumes:
       - name: jenkins-home
         persistentVolumeClaim:
